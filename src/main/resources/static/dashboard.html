@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trello Clone - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h1>🗂️ Trello Clone</h1>
+        <span style="color:white" id="welcomeMsg"></span>
+        <button onclick="logout()">Logout</button>
+    </nav>
+
+    <div class="dashboard">
+        <div class="board-header">
+            <h2>My Boards</h2>
+            <div class="create-board">
+                <input type="text" id="boardName"
+                       placeholder="New board name..." />
+                <button onclick="createBoard()">+ Create Board</button>
+            </div>
+        </div>
+        <div id="boards" class="boards-grid"></div>
+    </div>
+
+    <script>
+    function openBoard(boardId, boardName) {
+        localStorage.setItem('boardId', boardId);
+        localStorage.setItem('boardName', boardName);
+        window.location.href = 'board.html';
+    }
+        const userId = localStorage.getItem('userId') || 1;
+        const email = localStorage.getItem('userEmail') || '';
+        document.getElementById('welcomeMsg').innerText = 
+            email ? `Welcome, ${email}` : '';
+
+        async function loadBoards() {
+            try {
+                const response = await fetch(
+                    `http://localhost:8085/api/boards?userId=${userId}`
+                );
+                const boards = await response.json();
+                const container = document.getElementById('boards');
+                container.innerHTML = '';
+
+                if (boards.length === 0) {
+                    container.innerHTML =
+                        '<p style="color:white;font-size:18px">' +
+                        'No boards yet! Create one above. 👆</p>';
+                    return;
+                }
+
+                boards.forEach(board => {
+                    const div = document.createElement('div');
+                    div.className = 'board-card';
+                    div.innerHTML = `
+                        <h3 onclick="openBoard(${board.id}, '${board.name}')" 
+                            style="cursor:pointer; flex:1">
+                            ${board.name}
+                        </h3>
+                        <button class="delete-btn"
+                            onclick="deleteBoard(${board.id})">
+                            🗑️ Delete
+                        </button>
+                    `;
+                    container.appendChild(div);
+                });
+            } catch(e) {
+                console.error('Error loading boards:', e);
+            }
+        }
+
+        async function createBoard() {
+            const name = document.getElementById('boardName').value;
+            if (!name) {
+                alert('Please enter a board name!');
+                return;
+            }
+            await fetch(
+                `http://localhost:8085/api/boards?name=${name}&userId=${userId}`,
+                { method: 'POST' }
+            );
+            document.getElementById('boardName').value = '';
+            loadBoards();
+        }
+
+        async function deleteBoard(id) {
+            if (!confirm('Delete this board?')) return;
+            await fetch(`http://localhost:8085/api/boards/${id}`,
+                { method: 'DELETE' }
+            );
+            loadBoards();
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        loadBoards();
+    </script>
+</body>
+</html>

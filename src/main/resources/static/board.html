@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trello Clone - Board</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div style="display:flex; align-items:center; gap:15px">
+            <button onclick="window.location.href='dashboard.html'" 
+                style="width:auto; padding:8px 15px; background:rgba(255,255,255,0.2)">
+                ← Back
+            </button>
+            <h1 id="boardTitle">🗂️ Board</h1>
+        </div>
+        <button onclick="logout()">Logout</button>
+    </nav>
+
+    <div class="board-page">
+        <!-- Create List Section -->
+        <div class="create-list-bar">
+            <input type="text" id="listName" 
+                   placeholder="Enter list name..." />
+            <button onclick="createList()">+ Add List</button>
+        </div>
+
+        <!-- Lists Container -->
+        <div id="listsContainer" class="lists-container"></div>
+    </div>
+
+    <!-- Card Modal -->
+    <div id="cardModal" class="modal" style="display:none">
+        <div class="modal-content">
+            <h3>Add New Card</h3>
+            <input type="text" id="cardTitle" placeholder="Card title..." />
+            <input type="text" id="cardDesc" placeholder="Description..." />
+            <div style="display:flex; gap:10px; margin-top:10px">
+                <button onclick="saveCard()">Add Card</button>
+                <button onclick="closeModal()" 
+                    style="background:#999">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const boardId = localStorage.getItem('boardId');
+        const boardName = localStorage.getItem('boardName');
+        let currentListId = null;
+
+        // Set board title
+        document.getElementById('boardTitle').innerText = 
+            '🗂️ ' + (boardName || 'Board');
+
+        // Load all lists
+        async function loadLists() {
+            try {
+                const response = await fetch(
+                    `http://localhost:8085/api/lists?boardId=${boardId}`
+                );
+                const lists = await response.json();
+                const container = document.getElementById('listsContainer');
+                container.innerHTML = '';
+
+                if (lists.length === 0) {
+                    container.innerHTML = 
+                        '<p style="color:white; font-size:18px">' +
+                        'No lists yet! Add one above. 👆</p>';
+                    return;
+                }
+
+                lists.forEach(list => {
+                    const listDiv = document.createElement('div');
+                    listDiv.className = 'list-column';
+                    listDiv.innerHTML = `
+                        <div class="list-header">
+                            <h3>${list.name}</h3>
+                            <button class="delete-list-btn" 
+                                onclick="deleteList(${list.id})">✕</button>
+                        </div>
+                        <div id="cards-${list.id}" class="cards-container"></div>
+                        <button class="add-card-btn" 
+                            onclick="openModal(${list.id})">
+                            + Add Card
+                        </button>
+                    `;
+                    container.appendChild(listDiv);
+                    loadCards(list.id);
+                });
+            } catch(e) {
+                console.error('Error:', e);
+            }
+        }
+
+        // Load cards for a list
+        async function loadCards(listId) {
+            const response = await fetch(
+                `http://localhost:8085/api/cards?listId=${listId}`
+            );
+            const cards = await response.json();
+            const container = document.getElementById(`cards-${listId}`);
+            container.innerHTML = '';
+
+            cards.forEach(card => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'card-item';
+                cardDiv.innerHTML = `
+                    <div class="card-content">
+                        <p class="card-title">${card.title}</p>
+                        <p class="card-desc">${card.description || ''}</p>
+                    </div>
+                    <button class="delete-card-btn" 
+                        onclick="deleteCard(${card.id}, ${listId})">🗑️</button>
+                `;
+                container.appendChild(cardDiv);
+            });
+        }
+
+        // Create a new list
+        async function createList() {
+            const name = document.getElementById('listName').value;
+            if (!name) {
+                alert('Please enter a list name!');
+                return;
+            }
+            await fetch(
+                `http://localhost:8085/api/lists?name=${name}&boardId=${boardId}`,
+                { method: 'POST' }
+            );
+            document.getElementById('listName').value = '';
+            loadLists();
+        }
+
+        // Delete a list
+        async function deleteList(listId) {
+            if (!confirm('Delete this list and all its cards?')) return;
+            await fetch(`http://localhost:8085/api/lists/${listId}`,
+                { method: 'DELETE' }
+            );
+            loadLists();
+        }
+
+        // Open card modal
+        function openModal(listId) {
+            currentListId = listId;
+            document.getElementById('cardModal').style.display = 'flex';
+            document.getElementById('cardTitle').value = '';
+            document.getElementById('cardDesc').value = '';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('cardModal').style.display = 'none';
+            currentListId = null;
+        }
+
+        // Save card
+        async function saveCard() {
+            const title = document.getElementById('cardTitle').value;
+            const desc = document.getElementById('cardDesc').value;
+            if (!title) {
+                alert('Please enter a card title!');
+                return;
+            }
+            await fetch(
+                `http://localhost:8085/api/cards?title=${title}&description=${desc}&listId=${currentListId}`,
+                { method: 'POST' }
+            );
+            closeModal();
+            loadCards(currentListId);
+        }
+
+        // Delete a card
+        async function deleteCard(cardId, listId) {
+            await fetch(`http://localhost:8085/api/cards/${cardId}`,
+                { method: 'DELETE' }
+            );
+            loadCards(listId);
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        loadLists();
+    </script>
+</body>
+</html>

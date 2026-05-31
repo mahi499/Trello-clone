@@ -1,0 +1,371 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #0052cc;
+    min-height: 100vh;
+}
+
+/* Auth Pages */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.auth-box {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    width: 380px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.auth-box h1 {
+    color: #0052cc;
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+.auth-box h2 {
+    color: #333;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: border 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #0052cc;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #0052cc;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #0041a3;
+}
+
+.auth-box p {
+    margin-top: 15px;
+    color: #666;
+}
+
+.auth-box a {
+    color: #0052cc;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-box a:hover {
+    text-decoration: underline;
+}
+
+.message {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Navbar */
+.navbar {
+    background: #003d99;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.navbar h1 {
+    font-size: 22px;
+}
+
+.navbar button {
+    width: auto;
+    padding: 8px 20px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* Dashboard */
+.dashboard {
+    padding: 30px;
+}
+
+.board-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.board-header h2 {
+    color: white;
+    font-size: 22px;
+}
+
+.create-board {
+    display: flex;
+    gap: 10px;
+}
+
+.create-board input {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    width: 220px;
+    outline: none;
+}
+
+.create-board button {
+    width: auto;
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+/* Boards Grid */
+.boards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.board-card {
+    background: #0041a3;
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s;
+}
+
+.board-card:hover {
+    transform: translateY(-3px);
+}
+
+.board-card h3 {
+    font-size: 18px;
+}
+
+.delete-btn {
+    width: auto;
+    padding: 6px 12px;
+    background: rgba(255, 0, 0, 0.3);
+    border-radius: 6px;
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+.delete-btn:hover {
+    background: rgba(255, 0, 0, 0.5);
+}
+/* Board Page */
+.board-page {
+    padding: 20px 30px;
+}
+
+.create-list-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.create-list-bar input {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    width: 250px;
+    outline: none;
+}
+
+.create-list-bar button {
+    width: auto;
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 8px;
+}
+
+/* Lists */
+.lists-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 20px;
+    align-items: flex-start;
+}
+
+.list-column {
+    background: #e2e4e9;
+    border-radius: 10px;
+    padding: 12px;
+    min-width: 260px;
+    max-width: 260px;
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.list-header h3 {
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.delete-list-btn {
+    width: auto;
+    padding: 2px 8px;
+    background: transparent;
+    color: #666;
+    font-size: 16px;
+    margin: 0;
+}
+
+.delete-list-btn:hover {
+    background: rgba(0,0,0,0.1);
+    color: red;
+}
+
+/* Cards */
+.cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 10px;
+    min-height: 10px;
+}
+
+.card-item {
+    background: white;
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.card-content {
+    flex: 1;
+}
+
+.card-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.card-desc {
+    font-size: 12px;
+    color: #777;
+    margin-top: 3px;
+}
+
+.delete-card-btn {
+    width: auto;
+    padding: 2px 6px;
+    background: transparent;
+    font-size: 13px;
+    margin: 0;
+    color: #999;
+}
+
+.delete-card-btn:hover {
+    color: red;
+    background: transparent;
+}
+
+.add-card-btn {
+    width: 100%;
+    padding: 8px;
+    background: rgba(0,0,0,0.08);
+    color: #555;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-top: 5px;
+    text-align: left;
+}
+
+.add-card-btn:hover {
+    background: rgba(0,0,0,0.15);
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal-content h3 {
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.modal-content input {
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    width: 100%;
+}
+
+.modal-content input:focus {
+    border-color: #0052cc;
+}
