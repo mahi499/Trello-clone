@@ -173,7 +173,7 @@
 
         // Delete a card
         async function deleteCard(cardId, listId) {
-            await fetch(`http://localhost:8085/api/cards/${cardId}`,
+            await fetch(`https://trello-clone-q64i.onrender.com/api/cards/${cardId}`,
                 { method: 'DELETE' }
             );
             loadCards(listId);
