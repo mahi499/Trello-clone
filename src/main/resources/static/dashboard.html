@@ -79,7 +79,7 @@
                 return;
             }
             await fetch(
-                `http://localhost:8085/api/boards?name=${name}&userId=${userId}`,
+                `https://trello-clone-q64i.onrender.com/api/boards?name=${name}&userId=${userId}`,
                 { method: 'POST' }
             );
             document.getElementById('boardName').value = '';
@@ -88,7 +88,7 @@
 
         async function deleteBoard(id) {
             if (!confirm('Delete this board?')) return;
-            await fetch(`http://localhost:8085/api/boards/${id}`,
+            await fetch(`https://trello-clone-q64i.onrender.com/api/boards/${id}`,
                 { method: 'DELETE' }
             );
             loadBoards();

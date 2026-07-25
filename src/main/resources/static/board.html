@@ -57,7 +57,7 @@
         async function loadLists() {
             try {
                 const response = await fetch(
-                    `http://localhost:8085/api/lists?boardId=${boardId}`
+                    `https://trello-clone-q64i.onrender.com/api/lists?boardId=${boardId}`
                 );
                 const lists = await response.json();
                 const container = document.getElementById('listsContainer');
@@ -96,7 +96,7 @@
         // Load cards for a list
         async function loadCards(listId) {
             const response = await fetch(
-                `http://localhost:8085/api/cards?listId=${listId}`
+                `https://trello-clone-q64i.onrender.com/api/cards?listId=${listId}`
             );
             const cards = await response.json();
             const container = document.getElementById(`cards-${listId}`);
@@ -125,7 +125,7 @@
                 return;
             }
             await fetch(
-                `http://localhost:8085/api/lists?name=${name}&boardId=${boardId}`,
+                `https://trello-clone-q64i.onrender.com/api/lists?name=${name}&boardId=${boardId}`,
                 { method: 'POST' }
             );
             document.getElementById('listName').value = '';
@@ -135,7 +135,7 @@
         // Delete a list
         async function deleteList(listId) {
             if (!confirm('Delete this list and all its cards?')) return;
-            await fetch(`http://localhost:8085/api/lists/${listId}`,
+            await fetch(`https://trello-clone-q64i.onrender.com/api/lists/${listId}`,
                 { method: 'DELETE' }
             );
             loadLists();
@@ -164,7 +164,7 @@
                 return;
             }
             await fetch(
-                `http://localhost:8085/api/cards?title=${title}&description=${desc}&listId=${currentListId}`,
+                `https://trello-clone-q64i.onrender.com/api/cards?title=${title}&description=${desc}&listId=${currentListId}`,
                 { method: 'POST' }
             );
             closeModal();
